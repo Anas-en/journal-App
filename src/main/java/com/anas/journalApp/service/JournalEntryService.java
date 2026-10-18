@@ -68,25 +68,26 @@ public class JournalEntryService {
     }
 
 
+    @Transactional
     public boolean deleteById(ObjectId id, String username){
-        JournalEntry journalEntry = findById(id).orElse(null);
-        if(journalEntry !=null) {
-            try {
-                User user = userService.getUserByUsername(username);
-                user.getUserJournalsList().removeIf(x -> x.getId().equals(id));
-                userService.saveEntry(user);
-                journalEntryRepository.deleteById(id);
-                return true;
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+        try {
+            JournalEntry journalEntry = findById(id).orElse(null);
+            if(journalEntry !=null) {
+                    User user = userService.getUserByUsername(username);
+                    user.getUserJournalsList().removeIf(x -> x.getId().equals(id));
+                    userService.saveEntry(user);
+                    journalEntryRepository.deleteById(id);
+                    return true;
             }
-
+        }catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return false;
     }
 
 
+    //no need to make this Transaction as Users Hold Refrence , any
+    //update in Journals ,will show up in Users automatically
     public JournalEntry updateJournal(JournalEntry oldJournal , JournalEntry newJournal ){
         oldJournal.setTitle(newJournal.getTitle() != null && !newJournal.getTitle().equals("") ? newJournal.getTitle() : oldJournal.getTitle());
         oldJournal.setContent(newJournal.getContent() != null && !newJournal.getContent().equals("") ? newJournal.getContent() : oldJournal.getContent());
