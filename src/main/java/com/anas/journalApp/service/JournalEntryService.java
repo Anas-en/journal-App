@@ -27,7 +27,7 @@ public class JournalEntryService {
     //dependency Injection
 
 //
-//    @Transactional
+    @Transactional
     public JournalEntry  saveEntry(JournalEntry entry, String username){
         try{
             User user = userService.getUserByUsername(username);
@@ -37,7 +37,7 @@ public class JournalEntryService {
             //can be possible after this cannot be procced ?
             JournalEntry savedEntry =  journalEntryRepository.save(entry);
             user.getUserJournalsList().add(savedEntry);
-            userService.saveEntry(user);
+            userService.saveEntry(null);
 
             return savedEntry;
 
