@@ -31,5 +31,7 @@ public class User {
     @DBRef
     private List<JournalEntry> userJournalsList = new ArrayList<>();
 
+    private List<String> roles;
+
 
 }

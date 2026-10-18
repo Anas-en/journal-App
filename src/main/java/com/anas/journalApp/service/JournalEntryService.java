@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,6 +25,7 @@ public class JournalEntryService {
 
     @Autowired
     private UserService userService;
+
     //dependency Injection
 
 //
@@ -37,7 +39,7 @@ public class JournalEntryService {
             //can be possible after this cannot be procced ?
             JournalEntry savedEntry =  journalEntryRepository.save(entry);
             user.getUserJournalsList().add(savedEntry);
-            userService.saveEntry(null);
+            userService.saveUser(user);
 
             return savedEntry;
 
@@ -47,21 +49,6 @@ public class JournalEntryService {
     }
 
 
-    public JournalEntry  saveEntry(JournalEntry entry){
-        try{
-            entry.setDateTime(LocalDateTime.now());
-            entry.setId(entry.getId());
-            //can be possible after this cannot be procced ?
-            JournalEntry savedEntry =  journalEntryRepository.save(entry);
-            return savedEntry;
-        } catch (Exception e) {
-            throw new RuntimeException("An Error Occured : "+e);
-        }
-    }
-
-    public List<JournalEntry> getAllEntries(){
-        return journalEntryRepository.findAll();
-    }
 
     public Optional<JournalEntry> findById(ObjectId id ){
         return journalEntryRepository.findById(id);
@@ -71,13 +58,13 @@ public class JournalEntryService {
     @Transactional
     public boolean deleteById(ObjectId id, String username){
         try {
-            JournalEntry journalEntry = findById(id).orElse(null);
-            if(journalEntry !=null) {
-                    User user = userService.getUserByUsername(username);
-                    user.getUserJournalsList().removeIf(x -> x.getId().equals(id));
-                    userService.saveEntry(user);
-                    journalEntryRepository.deleteById(id);
-                    return true;
+            User user = userService.getUserByUsername(username);
+            List<JournalEntry> collect =  user.getUserJournalsList().stream().filter(x->x.getId().equals(id)).collect(Collectors.toList());
+            if(!collect.isEmpty()){
+                user.getUserJournalsList().removeIf(x -> x.getId().equals(id));
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(id);
+                return true;
             }
         }catch (Exception e) {
             throw new RuntimeException(e);
@@ -88,6 +75,19 @@ public class JournalEntryService {
 
     //no need to make this Transaction as Users Hold Refrence , any
     //update in Journals ,will show up in Users automatically
+
+
+    public boolean isEntryExists(ObjectId id , String username ){
+        User user = userService.getUserByUsername(username);
+        List<JournalEntry> collect = user.getUserJournalsList().stream().filter(x->x.getId().equals(id)).collect(Collectors.toList());
+        if(!collect.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+
+
     public JournalEntry updateJournal(JournalEntry oldJournal , JournalEntry newJournal ){
         oldJournal.setTitle(newJournal.getTitle() != null && !newJournal.getTitle().equals("") ? newJournal.getTitle() : oldJournal.getTitle());
         oldJournal.setContent(newJournal.getContent() != null && !newJournal.getContent().equals("") ? newJournal.getContent() : oldJournal.getContent());
