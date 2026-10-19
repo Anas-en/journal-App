@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableMethodSecurity
-public class SecurityConfig {
+public class SpringSecurity {
 
     @Bean
     public PasswordEncoder passwordEncoder(){

@@ -35,6 +35,15 @@ public class UserService {
         return true;
     }
 
+    public boolean createNewAdmin(User user){
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+        user.setRoles(Arrays.asList("USER","ADMIN"));
+        userRepository.save(user);
+        return true;
+    }
+
     public void saveUser(User user){
         userRepository.save(user);
     }

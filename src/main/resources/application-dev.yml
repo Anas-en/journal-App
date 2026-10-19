@@ -1,0 +1,11 @@
+#spring:
+#  application:
+#    name: journalApp
+#  mongodb:
+#    uri: mongodb+srv://anasbtechjmi_db_user:pKEBDRBqGclr7qGq@cluster0.hva7sgs.mongodb.net/journaldb?retryWrites=true&w=majority
+#
+#  data:
+#    mongodb:
+#      auto-index-creation: true
+#server:
+#  port: 8000
