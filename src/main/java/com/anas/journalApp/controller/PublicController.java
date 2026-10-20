@@ -22,13 +22,15 @@ public class PublicController {
 
     @PostMapping("register")
     public ResponseEntity<?> createUser(@RequestBody User user){
-        try {
-            userService.createNewUser(user);
+
+        boolean isCreated = userService.createNewUser(user);
+        if(isCreated){
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
+
+        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("UserName already exists");
-        }
+
     }
 
 

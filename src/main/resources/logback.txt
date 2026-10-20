@@ -1,0 +1,37 @@
+<!--<configuration >-->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>-->
+<!--            logs/journal-app.log-->
+<!--        </file>-->
+
+<!--        <rollingPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+
+<!--            <fileNamePattern>-->
+<!--                logs/archive/journal-app-%d{yyyy-MM-dd_HH-mm-ss}.%i.log.gz-->
+<!--            </fileNamePattern>-->
+
+<!--            <maxFileSize>10MB</maxFileSize>-->
+
+<!--            <maxHistory>10</maxHistory>-->
+
+<!--            <totalSizeCap>500MB</totalSizeCap>-->
+<!--        </rollingPolicy>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+
+<!--    </appender>-->
+
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--        <appender-ref ref="FILE"/>-->
+<!--    </root>-->
+
+
+<!--</configuration>-->

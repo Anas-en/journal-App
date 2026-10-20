@@ -9,3 +9,10 @@
 #      auto-index-creation: true
 #server:
 #  port: 8081
+
+#
+#logging:
+#  level:
+#    root: WARN
+#    com.anas.journalApp: INFO
+#    org.springframework.security: WARN
