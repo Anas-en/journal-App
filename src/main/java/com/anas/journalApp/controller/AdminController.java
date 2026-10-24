@@ -1,6 +1,7 @@
 package com.anas.journalApp.controller;
 
 
+import com.anas.journalApp.cache.AppCache;
 import com.anas.journalApp.dto.UserDTO;
 import com.anas.journalApp.entity.User;
 import com.anas.journalApp.service.UserService;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     @Autowired
+    private AppCache appCache;
+
+    @Autowired
     private UserService userService;
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -25,7 +29,7 @@ public class AdminController {
     public ResponseEntity<?> getAllUsers(){
           List<User> allUser = userService.getAllUser();
           if(allUser !=null && !allUser.isEmpty()){
-                List<UserDTO> userDTOs = allUser.stream().map(user-> new UserDTO(user.getUsername(),user.getRoles()))
+                List<UserDTO> userDTOs = allUser.stream().map(user-> new UserDTO(user.getUsername(),user.getEmail(),user.getRoles() , user.isSentimentAnalyis()))
                         .collect(Collectors.toList());
 
                 return ResponseEntity.status(HttpStatus.OK).body(userDTOs);
@@ -43,5 +47,11 @@ public class AdminController {
              return ResponseEntity.status(HttpStatus.CREATED).build();
          }
          return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+    }
+
+
+    @PostMapping("/clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
     }
 }

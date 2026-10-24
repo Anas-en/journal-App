@@ -4,6 +4,7 @@ package com.anas.journalApp.entity;
 
 //POJO - >  Play in Old Java Object
 
+import com.anas.journalApp.enums.Sentiment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,4 +33,5 @@ public class JournalEntry {
 
     private LocalDateTime dateTime;
 
+    private Sentiment sentiment;
 }

@@ -28,6 +28,9 @@ public class User {
     @NonNull
     private String password;
 
+    private String email;
+    
+    private boolean sentimentAnalyis;
     @DBRef
     private List<JournalEntry> userJournalsList = new ArrayList<>();
 
