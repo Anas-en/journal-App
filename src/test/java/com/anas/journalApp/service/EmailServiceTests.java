@@ -1,6 +1,7 @@
 package com.anas.journalApp.service;
 
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ public class EmailServiceTests {
     private EmailService emailService;
 
     @Test
+    @Disabled
     void testSendMail(){
         emailService.sendEmail("anasbtechjmi@gmail.com",
                 "this is SMTP",

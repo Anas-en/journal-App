@@ -28,6 +28,9 @@ public class WeatherService {
     @Autowired
     private AppCache appCache;
 
+    @Autowired
+    private RedisService redisService;
+
     private static final String  API = "http://api.weatherstack.com/current?access_key=<APIKEY>&query=<CITY>";
 
 
@@ -50,9 +53,17 @@ public class WeatherService {
 //                    city
 //            );
 
-
-         ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET,null, WeatherResponse.class);
-         return response.getBody();
+        WeatherResponse weatherResponse = redisService.get("Weather_of_"+city ,WeatherResponse.class);
+        if(weatherResponse !=null){
+            return weatherResponse;
+        }else{
+            ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET,null, WeatherResponse.class);
+            WeatherResponse body =  response.getBody();
+            if(body != null){
+                redisService.set("Weather_of_"+city,body , 300l);  //-1 -> for infinite time
+            }
+            return body;
+        }
 
     }
 
